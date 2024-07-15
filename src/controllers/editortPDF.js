@@ -15,8 +15,9 @@ const pdfFilePath = path.join(__dirname, '..', '..', 'Public', 'albaran.pdf');
 
 // Función para modificar un archivo PDF
 async function modifyPDF(pedido) {
-  let totalQuantity = 0; 
-  let subTotal = 0;
+  let totalQuantity = 0; // Inicializar totalQuantity fuera del bucle
+  let subTotal = 0; // Inicializar subTotal fuera del bucle
+
   try {
     // Lee el archivo PDF
     const pdfBuffer = await readFile(pdfFilePath);
@@ -40,7 +41,7 @@ async function modifyPDF(pedido) {
       size: 10,
       color: rgb(0, 0, 0),
     });
-    
+
     for (let i = 0; i < pedido.Productos.length; i++) {
       firstPage.drawText(pedido.Productos[i].Nº, {
         x: width * 0.08,
@@ -52,7 +53,6 @@ async function modifyPDF(pedido) {
       // Procesar descripción para manejar más de 6 palabras
       let descripcion = pedido.Productos[i].Description;
       if (descripcion.includes('μ')) {
-        
         descripcion = descripcion.replace(/μ/g, '');
       }
       const palabras = descripcion.split(' ');
@@ -73,7 +73,6 @@ async function modifyPDF(pedido) {
         color: rgb(0, 0, 0),
       });
       if (descripcionLinea2) {
-        const firstLine = height * (0.57 - i * 0.04)
         const secondLineY = height * (0.57 - i * 0.04) - 10.5;
         firstPage.drawText(descripcionLinea2, {
           x: width * 0.23,
@@ -82,78 +81,84 @@ async function modifyPDF(pedido) {
           color: rgb(0, 0, 0),
         });
       }
-    
-      firstPage.drawText( pedido.Productos[i].Quantity.toString(), {
+
+      firstPage.drawText(pedido.Productos[i].Quantity.toString(), {
         x: width * 0.58,
         y: height * (0.57 - i * 0.04),
         size: 10,
         color: rgb(0, 0, 0),
       });
-      if(pedido.Productos[i]['Unit Price']){
-      firstPage.drawText( pedido.Productos[i]['Unit Price'].toString(), {
-        x: width * 0.645,
-        y: height * (0.57 - i * 0.04),
-        size: 10,
-        color: rgb(0, 0, 0),
-      });
-      
-      firstPage.drawText( '21.0', {
-        x: width * 0.77,
-        y: height * (0.57 - i * 0.04),
-        size: 10,
-        color: rgb(0, 0, 0),
-      });
-      firstPage.drawText( (pedido.Productos[i].Quantity*pedido.Productos[i]['Unit Price']).toFixed(2).toString(), {
-        x: width * 0.87,
-        y: height * (0.57 - i * 0.04),
-        size: 10,
-        color: rgb(0, 0, 0),
-      });
-       totalQuantity= pedido.Productos[i].Quantity+totalQuantity
-      subTotal= (pedido.Productos[i].Quantity*pedido.Productos[i]['Unit Price'])+ subTotal
-      
+
+      if (pedido.Productos[i]['Unit Price']) {
+        firstPage.drawText(pedido.Productos[i]['Unit Price'].toString(), {
+          x: width * 0.645,
+          y: height * (0.57 - i * 0.04),
+          size: 10,
+          color: rgb(0, 0, 0),
+        });
+
+        firstPage.drawText('21.0', {
+          x: width * 0.77,
+          y: height * (0.57 - i * 0.04),
+          size: 10,
+          color: rgb(0, 0, 0),
+        });
+
+        const lineSubTotal = (pedido.Productos[i].Quantity * pedido.Productos[i]['Unit Price']).toFixed(2);
+        firstPage.drawText(lineSubTotal.toString(), {
+          x: width * 0.87,
+          y: height * (0.57 - i * 0.04),
+          size: 10,
+          color: rgb(0, 0, 0),
+        });
+
+        totalQuantity += pedido.Productos[i].Quantity;
+        subTotal += parseFloat(lineSubTotal);
+      }
     }
-    firstPage.drawText( totalQuantity.toString(), {
+
+    firstPage.drawText(totalQuantity.toString(), {
       x: width * 0.58,
       y: height * (0.165),
       size: 10,
       color: rgb(0, 0, 0),
     });
-    firstPage.drawText( subTotal.toString(), {
+
+    firstPage.drawText(subTotal.toString(), {
       x: width * 0.87,
       y: height * (0.165),
       size: 10,
       color: rgb(0, 0, 0),
     });
-    firstPage.drawText( subTotal.toString(), {
+
+    firstPage.drawText(subTotal.toString(), {
       x: width * 0.45,
       y: height * (0.115),
       size: 10,
       color: rgb(0, 0, 0),
     });
-    firstPage.drawText( (subTotal*0.21).toFixed(2).toString(), {
+
+    firstPage.drawText((subTotal * 0.21).toFixed(2).toString(), {
       x: width * 0.58,
       y: height * (0.115),
       size: 10,
       color: rgb(0, 0, 0),
-    });    
-    
-    firstPage.drawText( ((subTotal*0.21)+subTotal).toFixed(2).toString()+" €", {
+    });
+
+    firstPage.drawText(((subTotal * 0.21) + subTotal).toFixed(2).toString() + " €", {
       x: width * 0.85,
       y: height * (0.115),
       size: 12,
       color: rgb(0, 0, 0),
     });
-  }
- 
-// Guarda el PDF modificado en memoria
-const pdfBytes = await pdfDoc.save();
 
-// Devuelve el nombre del archivo generado
-const fileName = `Albaran_${pedido.Pedido}.pdf`;
-return { fileName, pdfBytes };
+    // Guarda el PDF modificado en memoria
+    const pdfBytes = await pdfDoc.save();
 
-   
+    // Devuelve el nombre del archivo generado
+    const fileName = `Albaran_${pedido.Pedido}.pdf`;
+    return { fileName, pdfBytes };
+
   } catch (error) {
     console.error('Error al modificar el PDF:', error);
   }

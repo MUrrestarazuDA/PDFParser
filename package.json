@@ -7,7 +7,8 @@
   "scripts": {
     "start": "nodemon src/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --detectOpenHandles --forceExit",
-    "jsdoc": "jsdoc -r src -d docs -t node_modules/docdash"
+    "jsdoc": "jsdoc -r src -d docs -t node_modules/docdash",
+    "build": "npm run vercel-build"
   },
   "keywords": [],
   "author": "",

@@ -25,8 +25,8 @@ const app = express();
 
  const corsOptions = {
   origin: ['https://innovative-systems.diselan.com/leboriz', 'http://localhost:5173'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
+ 
 };
 app.use(cors(corsOptions));
 

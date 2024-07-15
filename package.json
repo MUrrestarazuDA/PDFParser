@@ -8,7 +8,8 @@
     "start": "nodemon src/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --detectOpenHandles --forceExit",
     "jsdoc": "jsdoc -r src -d docs -t node_modules/docdash",
-    "build": "npm run vercel-build"
+    "build": "npm install && npm run build:node",
+    "build:node": "echo 'No build steps needed for Node.js application'"
   },
   "keywords": [],
   "author": "",

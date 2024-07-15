@@ -15,6 +15,8 @@ const pdfFilePath = path.join(__dirname, '..', '..', 'Public', 'albaran.pdf');
 
 // Función para modificar un archivo PDF
 async function modifyPDF(pedido) {
+  let totalQuantity = 0; 
+  let subTotal = 0;
   try {
     // Lee el archivo PDF
     const pdfBuffer = await readFile(pdfFilePath);
@@ -38,8 +40,7 @@ async function modifyPDF(pedido) {
       size: 10,
       color: rgb(0, 0, 0),
     });
-    let totalQuantity=0
-    let subTotal=0
+    
     for (let i = 0; i < pedido.Productos.length; i++) {
       firstPage.drawText(pedido.Productos[i].Nº, {
         x: width * 0.08,

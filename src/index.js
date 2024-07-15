@@ -23,11 +23,12 @@ const app = express();
  //app.use(session(sessionConfig));
 
 
- app.use(cors({
-    origin: [ 'http://localhost:5173'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  }));
+ const corsOptions = {
+  origin: ['https://innovative-systems.diselan.com/leboriz', 'http://localhost:5173'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use(express.static("Public"));
 

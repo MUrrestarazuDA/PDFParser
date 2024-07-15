@@ -1,7 +1,7 @@
 {
-  "name": "PDFCSVReader",
+  "name": "pdfcsvreader",
   "version": "1.0.0",
-  "description": "PDFCSVReader",
+  "description": "pdfcsvreader",
   "main": "index.js",
   "type": "module",
   "scripts": {

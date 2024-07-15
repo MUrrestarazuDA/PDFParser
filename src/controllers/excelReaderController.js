@@ -35,7 +35,7 @@ async function processExcel(req, res) {
             });
         });
 
-        console.log(separatedData)
+       
 
         const filesZiped = await editortPDF.CreatePDF(separatedData);
 

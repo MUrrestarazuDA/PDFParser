@@ -1,10 +1,17 @@
 import { PDFDocument, rgb } from 'pdf-lib';
 import { readFile, writeFile } from 'fs/promises';
 import JSZip from 'jszip';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Convertir la URL a una ruta de archivo
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Ruta al archivo PDF de entrada y salida
-const pdfFilePath = './Public/albaran.pdf';
-const outputFilePath = './Public/albaran_nuevo.pdf';
+const pdfFilePath = path.join(__dirname, '..', '..', 'Public', 'albaran.pdf');
+
+
 
 // Función para modificar un archivo PDF
 async function modifyPDF(pedido) {
@@ -123,7 +130,7 @@ async function modifyPDF(pedido) {
       size: 10,
       color: rgb(0, 0, 0),
     });
-    firstPage.drawText( (subTotal*0.21).toString(), {
+    firstPage.drawText( (subTotal*0.21).toFixed(2).toString(), {
       x: width * 0.58,
       y: height * (0.115),
       size: 10,

@@ -24,10 +24,11 @@ const app = express();
 
 
  const corsOptions = {
-  origin: ['https://innovative-systems.diselan.com/leboriz', 'http://localhost:5173'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
- 
+  origin: ['https://innovative-systems.diselan.com', 'http://localhost:5173'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
+
 app.use(cors(corsOptions));
 
 app.use(express.static("Public"));
